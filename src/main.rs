@@ -26,6 +26,7 @@ fn main() -> Result<()> {
     for sub_dir in sub_dirs.iter() {
         media_entries.push(get_media_entry(sub_dir)?);
     }
+    media_entries.sort_by(|a, b| a.dir_path.cmp(&b.dir_path));
     println!("get media entries: {:?}", media_entries);
 
     build_index_html(media_entries, base_dir)
@@ -79,6 +80,11 @@ fn get_media_entry(dir: &PathBuf) -> Result<MediaEntry> {
             _ => ()
         };
     }
+
+    // sort images & videos
+    images.sort();
+    videos.sort();
+
     
     Ok(MediaEntry {
         dir_path: dir.clone(),
